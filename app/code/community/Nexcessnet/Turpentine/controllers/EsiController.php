@@ -89,7 +89,14 @@ class Nexcessnet_Turpentine_EsiController extends Mage_Core_Controller_Front_Act
                 Mage::app()->setCurrentStore(
                     Mage::app()->getStore($esiData->getStoreId()) );
                 $appShim = Mage::getModel('turpentine/shim_mage_core_app');
-                if ($referer = $this->_getRefererUrl()) {
+                // Try to use the not rewritten url so that all the calls to Mage::getUrl('*/*/*') will work
+                if ($notRewrittenUrl = $esiData->getNotRewrittenUrl()) {
+                    $dummyRequest = Mage::helper('turpentine/esi')
+                        ->getDummyRequest($notRewrittenUrl);
+                    if ($parentUrl = $esiData->getParentUrl()) {
+                        $dummyRequest->setAlias(Mage_Core_Model_Url_Rewrite::REWRITE_REQUEST_PATH_ALIAS, ltrim($parentUrl, '/'));
+                    }
+                } else if ($referer = $this->_getRefererUrl()) {
                     $referer = htmlspecialchars_decode($referer);
                     $dummyRequest = Mage::helper('turpentine/esi')
                         ->getDummyRequest($referer);

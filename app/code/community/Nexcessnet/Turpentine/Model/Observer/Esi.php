@@ -354,6 +354,8 @@ class Nexcessnet_Turpentine_Model_Observer_Esi extends Varien_Event_Observer {
             }
         }
         if ($esiOptions[$scopeParam] == 'page') {
+            // Set the not rewritten url that will be used in the EsiController
+            $esiData->setNotRewrittenUrl(Mage::getUrl('*/*/*', array('_use_rewrite' => false, '_current' => true)));
             $esiData->setParentUrl(Mage::app()->getRequest()->getRequestString());
         }
         if (is_array($esiOptions['dummy_blocks'])) {
