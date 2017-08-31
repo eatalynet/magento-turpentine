@@ -147,8 +147,9 @@ class Nexcessnet_Turpentine_Model_Observer_Ban extends Varien_Event_Observer {
      */
     public function banCategoryCache($eventObject) {
         if (Mage::helper('turpentine/varnish')->getVarnishEnabled()) {
+            $banHelper = Mage::helper('turpentine/ban');
             $category = $eventObject->getCategory();
-            $result = $this->_getVarnishAdmin()->flushUrl($category->getUrlKey());
+            $result = $this->_getVarnishAdmin()->flushUrl($banHelper->getCategoryUrlKey($category));
             Mage::dispatchEvent('turpentine_ban_category_cache', $result);
             $cronHelper = Mage::helper('turpentine/cron');
             if ($this->_checkResult($result) &&

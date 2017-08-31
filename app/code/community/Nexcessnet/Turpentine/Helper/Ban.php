@@ -61,4 +61,30 @@ class Nexcessnet_Turpentine_Helper_Ban extends Mage_Core_Helper_Abstract {
         }
         return $parentProducts;
     }
+
+    /**
+     * Get category url key. When saving a category for a particular store view, the saved category object doesn't have the url key, so it should be retrieved from the default config.
+     *
+     * @param Mage_Catalog_Model_Category $category
+     * @return string
+     */
+    public function getCategoryUrlKey($category)
+    {
+        if ($urlKey = $category->getUrlKey()) {
+            return $urlKey;
+        }
+
+        /** @var Mage_Catalog_Model_Resource_Category_Collection $collection */
+        $collection = Mage::getResourceModel('catalog/category_collection');
+        $collection->addAttributeToSelect('url_key')
+            ->addAttributeToFilter('entity_id', $category->getEntityId());
+
+        $defaultCategory = $collection->getFirstItem();
+
+        if ($defaultCategory) {
+            return $defaultCategory->getData('url_key') ?: false;
+        }
+
+        return false;
+    }
 }
