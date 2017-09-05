@@ -87,4 +87,42 @@ class Nexcessnet_Turpentine_Helper_Ban extends Mage_Core_Helper_Abstract {
 
         return false;
     }
+
+    /**
+     * @param Mage_Cms_Model_Page $page
+     * @return array
+     */
+    public function getHomePageUrls($page)
+    {
+        $homeUrls = [];
+        $stores = [];
+        if (is_array($page->getStoreId())) {
+            $stores = $page->getStoreId();
+        } else if (is_array($page->getStores())) {
+            $stores = $page->getStores();
+        }
+
+        foreach ($stores as $storeId) {
+            if ($page->getIdentifier() == Mage::getStoreConfig('web/default/cms_home_page', $storeId)) {
+
+                $homeUrls[] = $this->getHomeUrlWithoutDomain($storeId);
+            }
+        }
+
+        return $homeUrls;
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     * @throws Mage_Core_Exception
+     */
+    public function getHomeUrlWithoutDomain($storeId)
+    {
+        return str_replace(
+            Mage::app()->getStore($storeId)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB),
+            '',
+            Mage::app()->getStore($storeId)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK)
+        );
+    }
 }

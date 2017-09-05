@@ -209,6 +209,11 @@ class Nexcessnet_Turpentine_Model_Observer_Ban extends Varien_Event_Observer {
         if (Mage::helper('turpentine/varnish')->getVarnishEnabled()) {
             $pageId = $eventObject->getDataObject()->getIdentifier();
             $result = $this->_getVarnishAdmin()->flushUrl($pageId.'(?:\.html?)?\/?$');
+
+            foreach (Mage::helper('turpentine/ban')->getHomePageUrls($eventObject->getDataObject()) as $url) {
+                $this->_getVarnishAdmin()->flushUrl($url.'$');
+            }
+
             Mage::dispatchEvent('turpentine_ban_cms_page_cache', $result);
             $cronHelper = Mage::helper('turpentine/cron');
             if ($this->_checkResult($result) &&
@@ -237,6 +242,11 @@ class Nexcessnet_Turpentine_Model_Observer_Ban extends Varien_Event_Observer {
             }
             $pageIdentifier = $page->getIdentifier();
             $result = $this->_getVarnishAdmin()->flushUrl($pageIdentifier.'(?:\.html?)?$');
+
+            foreach (Mage::helper('turpentine/ban')->getHomePageUrls($page) as $url) {
+                $this->_getVarnishAdmin()->flushUrl($url.'$');
+            }
+
             Mage::dispatchEvent('turpentine_ban_cms_page_cache', $result);
             $cronHelper = Mage::helper('turpentine/cron');
             if ($this->_checkResult($result) &&
