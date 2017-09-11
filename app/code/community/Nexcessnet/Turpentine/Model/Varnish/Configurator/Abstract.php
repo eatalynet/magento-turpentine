@@ -287,10 +287,10 @@ EOS;
                             Mage_Core_Model_Store::URL_TYPE_MEDIA);
         foreach (Mage::app()->getStores() as $store) {
             foreach ($linkTypes as $linkType) {
-                $paths[] = parse_url($store->getBaseUrl($linkType, false),
-                    PHP_URL_PATH);
-                $paths[] = parse_url($store->getBaseUrl($linkType, true),
-                    PHP_URL_PATH);
+                $paths[] = rtrim(parse_url($store->getBaseUrl($linkType, false),
+                    PHP_URL_PATH), '/');
+                $paths[] = rtrim(parse_url($store->getBaseUrl($linkType, true),
+                    PHP_URL_PATH), '/');
             }
         }
         $paths = array_unique($paths);
