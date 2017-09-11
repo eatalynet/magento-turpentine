@@ -295,13 +295,11 @@ class Nexcessnet_Turpentine_Model_Observer_Esi extends Varien_Event_Observer {
                 $urlOptions[$referrerParam] = Mage::helper('core')->urlEncode(
                     Mage::getUrl('*/*/*', array('_use_rewrite' => true, '_current' => true))
                 );
+
+                //Keep params from original url
+                $urlOptions['_query'] = Mage::app()->getRequest()->getParams();
             }
 
-            /**
-             * Keep params from original url
-             */
-            $urlOptions['_query'] = Mage::app()->getRequest()->getParams();
-            
             $esiUrl = Mage::getUrl('turpentine/esi/getBlock', $urlOptions);
             if ($esiOptions[$methodParam] == 'esi') {
                 // setting [web/unsecure/base_url] can be https://... but ESI can never be HTTPS
