@@ -100,6 +100,8 @@ class Nexcessnet_Turpentine_Helper_Ban extends Mage_Core_Helper_Abstract {
             $stores = $page->getStoreId();
         } else if (is_array($page->getStores())) {
             $stores = $page->getStores();
+        } else if ($page->getStoreId() && is_numeric($page->getStoreId())) {
+            $stores = array($page->getStoreId());
         }
 
         foreach ($stores as $storeId) {
