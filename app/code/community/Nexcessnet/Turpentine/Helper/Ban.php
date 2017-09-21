@@ -121,10 +121,10 @@ class Nexcessnet_Turpentine_Helper_Ban extends Mage_Core_Helper_Abstract {
      */
     public function getHomeUrlWithoutDomain($storeId)
     {
-        return str_replace(
+        return rtrim(str_replace(
             Mage::app()->getStore($storeId)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB),
             '',
             Mage::app()->getStore($storeId)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK)
-        );
+        ), '/') . '/?';
     }
 }
