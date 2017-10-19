@@ -434,7 +434,7 @@ sub vcl_deliver {
                 }
             }
         }
-        set resp.http.Set-Cookie = resp.http.Set-Cookie + "; httponly";
+        set resp.http.Set-Cookie = resp.http.Set-Cookie + "; {{secure_cookie}}httponly";
         unset resp.http.X-Varnish-Cookie-Expires;
     }
     if (req.http.X-Varnish-Esi-Method == "ajax" && req.http.X-Varnish-Esi-Access == "private") {

@@ -1057,6 +1057,7 @@ sub vcl_synth {
                 $this->_getVclTemplateFilename(self::VCL_CUSTOM_C_CODE_FILE) ),
             'esi_private_ttl'   => Mage::helper('turpentine/esi')
                 ->getDefaultEsiTtl(),
+            'secure_cookie' => (Mage::helper('core')->isModuleEnabled('Etailer_SecureCookie') && Mage::helper('etailersecurecookie')->checkSecureFrontend() ? 'secure; ' : '')
         );
 
         if ((bool) Mage::getStoreConfig('turpentine_vcl/urls/bypass_cache_store_url')) {
